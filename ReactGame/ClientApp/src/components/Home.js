@@ -14,30 +14,32 @@ class Board extends Component {
             <Square
                 value={this.props.squares[i]}
                 onClick={() => this.props.onClick(i)}
+                key={i}
             />
             );
     }
 
+    renderBoard() {
+        
+    }
+
     render() {
+        let i = 0, amountRows = 3, amountColumns = 3;
+
+        let rows = Array(amountRows);
+        for (var r = 0; r < amountRows; r++) {
+
+            let columns = Array(amountColumns);
+            for (var c = 0; c < amountColumns; c++) {
+                columns[c] = this.renderSquare(i);
+                i++;
+            }
+            rows[r] = React.createElement("div", { className: "board-row", key: r + c }, columns);
+        }
+
         return (
-            <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
-            </div>
-            );
+            rows
+        );
     }
 }
 
@@ -111,7 +113,12 @@ class Game extends React.Component {
             const desc = move ? "Go to move #" + move + " where square (" + this.calculateColumnAndRow(history[move].squareNumber) + ") was clicked" : "Go to start";
             return (
                 <li key={move}>
-                    <button onClick={()=>this.jumpTo(move)}>{desc}</button>
+                    <button
+                        onClick={() => this.jumpTo(move)}
+                        className={
+                            this.state.stepNumber === move ? "font-weight-bold" : " "
+                        }
+                    >{desc}</button>
                 </li>
                 );
         })
